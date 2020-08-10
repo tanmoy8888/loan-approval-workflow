@@ -16,6 +16,7 @@ hs_err_pid*
 *.iml
 
 /target/
+camunda-h2-database.mv.db
 
 .classpath
 .settings
