@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_19cbbd6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.0.0">
+  <bpmn:process id="my-camunda-workflow-timer-expression" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Loan Request">
+      <bpmn:outgoing>Flow_0rcstdf</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0rcstdf" sourceRef="StartEvent_1" targetRef="Activity_1f6989u" />
+    <bpmn:sequenceFlow id="Flow_06p8ilf" sourceRef="Activity_1f6989u" targetRef="Activity_0m8ezmd" />
+    <bpmn:serviceTask id="Activity_0a5aadz" name="Check Further" camunda:class="com.example.workflow.bpmn.task.LoanProcessIntermediateDeligate">
+      <bpmn:incoming>Flow_13v2nak</bpmn:incoming>
+      <bpmn:outgoing>Flow_044khk2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0m8ezmd" name="Issue loan" camunda:class="com.example.workflow.bpmn.task.LoanProcessDeligate">
+      <bpmn:incoming>Flow_06p8ilf</bpmn:incoming>
+      <bpmn:outgoing>Flow_00zz19x</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1t53odq">
+      <bpmn:incoming>Flow_009gl91</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_00zz19x" sourceRef="Activity_0m8ezmd" targetRef="Event_03opuns" />
+    <bpmn:userTask id="Activity_1f6989u" name="Check  Criteria" camunda:assignee="admin">
+      <bpmn:incoming>Flow_0rcstdf</bpmn:incoming>
+      <bpmn:outgoing>Flow_06p8ilf</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_009gl91" sourceRef="Activity_13hkywj" targetRef="Event_1t53odq" />
+    <bpmn:userTask id="Activity_13hkywj" name="Final Approval" camunda:assignee="admin">
+      <bpmn:incoming>Flow_044khk2</bpmn:incoming>
+      <bpmn:outgoing>Flow_009gl91</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:intermediateCatchEvent id="Event_03opuns">
+      <bpmn:incoming>Flow_00zz19x</bpmn:incoming>
+      <bpmn:outgoing>Flow_13v2nak</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0hp37xt">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">${TimerTask.duration()}</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_044khk2" sourceRef="Activity_0a5aadz" targetRef="Activity_13hkywj" />
+    <bpmn:sequenceFlow id="Flow_13v2nak" sourceRef="Event_03opuns" targetRef="Activity_0a5aadz" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="my-camunda-workflow-timer-expression">
+      <bpmndi:BPMNEdge id="Flow_13v2nak_di" bpmnElement="Flow_13v2nak">
+        <di:waypoint x="578" y="117" />
+        <di:waypoint x="630" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_044khk2_di" bpmnElement="Flow_044khk2">
+        <di:waypoint x="730" y="117" />
+        <di:waypoint x="780" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_009gl91_di" bpmnElement="Flow_009gl91">
+        <di:waypoint x="880" y="117" />
+        <di:waypoint x="912" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_00zz19x_di" bpmnElement="Flow_00zz19x">
+        <di:waypoint x="500" y="117" />
+        <di:waypoint x="542" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06p8ilf_di" bpmnElement="Flow_06p8ilf">
+        <di:waypoint x="350" y="117" />
+        <di:waypoint x="400" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0rcstdf_di" bpmnElement="Flow_0rcstdf">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="250" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="162" y="142" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0q4dsgy_di" bpmnElement="Activity_0a5aadz">
+        <dc:Bounds x="630" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1x7iblj_di" bpmnElement="Activity_0m8ezmd">
+        <dc:Bounds x="400" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1t53odq_di" bpmnElement="Event_1t53odq">
+        <dc:Bounds x="912" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19d0qhf_di" bpmnElement="Activity_1f6989u">
+        <dc:Bounds x="250" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0nb5waf_di" bpmnElement="Activity_13hkywj">
+        <dc:Bounds x="780" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0sd1v8r_di" bpmnElement="Event_03opuns">
+        <dc:Bounds x="542" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
