@@ -8,7 +8,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+ 
 @Service
 public class LoanProcessDeligate implements JavaDelegate {
 
@@ -20,9 +20,11 @@ public class LoanProcessDeligate implements JavaDelegate {
 	  public void execute(DelegateExecution execution) throws Exception {
 		  
          // These below variabes are put in the camunda engine		  
-		  execution.setVariable("duration", "PT20S");
-		  execution.setVariable("activation_date", "18-08-2020");
+		  execution.setVariable("duration_time", "PT20S");		
+		  execution.setVariable("activation_date", "2020-08-11T18:59:00");  
 		  execution.setVariable("wish_date", "15-08-2020");
+		  
+		  
 	    LOGGER.info("###################  ################################  Inside LoanProcessDeligate Processing request by ");
 	  }
 }

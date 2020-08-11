@@ -1,8 +1,11 @@
 package com.example.workflow.bpmn.task;
 
+import java.util.Optional;
+
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.camunda.bpm.engine.runtime.VariableInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,8 +32,31 @@ public class TimerTaskAfter  implements JavaDelegate
 			System.out.println("Inside  TimerTaskAfter Bean false");
 		System.out.println("From TimerTask Class ::: ");
 		this.runtimeservice.createVariableInstanceQuery().list().forEach(System.out::println);
+		
+		/*
+							 * this.runtimeservice.createVariableInstanceQuery() .list().stream() .filter(a
+							 * ->
+							 * a.getName().equals("activation_date")).findFirst().get().getValue().toString(
+							 * );
+							 * 
+							 * 
+							 */
+		
+		String activation = this.getValue("activation_date");
+		System.out.println("activation-------------------->"+activation);
+		
 		}
 		return "PT10S";
+	}
+	
+	public String getValue(String key) {
+		Optional<VariableInstance> instance= this.runtimeservice.createVariableInstanceQuery()
+		.list().stream()
+		.filter(a -> a.getName().equals("activation_date"))
+		.findFirst();
+		return instance.isPresent() ? instance.get().getValue().toString() : "unavailable";
+		//.findFirst().get().getValue().toString();
+		
 	}
 
 
