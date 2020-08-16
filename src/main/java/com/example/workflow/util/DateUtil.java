@@ -8,13 +8,14 @@ public class DateUtil {
 	public static String FORMAT_2 ="yyyy-MM-dd";
 	
 	public static Date convertDateFromString(String dateStr) {
-		System.out.println("dateStr------------>"+dateStr);
 		Date date =null;
 		try {
 			if(checkFormat(FORMAT_1, dateStr)){
+				System.out.println("dateStr-----1------->"+dateStr);
 				date = new SimpleDateFormat(FORMAT_1).parse(dateStr);
 			}
 			else if(checkFormat(FORMAT_1, dateStr)){
+				System.out.println("dateStr-----2------->"+dateStr);
 				date = new SimpleDateFormat(FORMAT_2).parse(dateStr);
 			}
 		}

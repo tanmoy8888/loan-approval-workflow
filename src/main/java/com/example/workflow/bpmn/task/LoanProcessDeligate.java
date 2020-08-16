@@ -9,7 +9,7 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  
-@Service
+@Service("loanProcessDeligate")
 public class LoanProcessDeligate implements JavaDelegate {
 
 	  private final static Logger LOGGER = Logger.getLogger("LOAN-REQUESTS");

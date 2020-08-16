@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_19cbbd6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.0.0">
-  <bpmn:process id="my-camunda-workflow-timer-expression" isExecutable="true">
+  <bpmn:process id="my-camunda-workflow-timer-expression-junit" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1" name="Loan Request">
       <bpmn:outgoing>Flow_0rcstdf</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0rcstdf" sourceRef="StartEvent_1" targetRef="Activity_1f6989u" />
-    <bpmn:sequenceFlow id="Flow_06p8ilf" sourceRef="Activity_1f6989u" targetRef="Activity_0m8ezmd" />
-    <bpmn:serviceTask id="Activity_0a5aadz" name="Check Further" camunda:class="com.example.workflow.bpmn.task.LoanProcessIntermediateDeligate">
+    <bpmn:sequenceFlow id="Flow_0rcstdf" sourceRef="StartEvent_1" targetRef="user_check_criteria" />
+    <bpmn:sequenceFlow id="Flow_06p8ilf" sourceRef="user_check_criteria" targetRef="issue_loan_system" />
+    <bpmn:serviceTask id="Check_Further_system" name="Check_Further_system" camunda:class="com.example.workflow.bpmn.task.LoanProcessIntermediateDeligate">
       <bpmn:incoming>Flow_13v2nak</bpmn:incoming>
       <bpmn:outgoing>Flow_044khk2</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_0m8ezmd" name="Issue loan" camunda:class="com.example.workflow.bpmn.task.LoanProcessDeligate">
+    <bpmn:serviceTask id="issue_loan_system" name="issue_loan_system" camunda:class="com.example.workflow.bpmn.task.LoanProcessDeligate">
       <bpmn:incoming>Flow_06p8ilf</bpmn:incoming>
       <bpmn:outgoing>Flow_00zz19x</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="Event_1t53odq">
       <bpmn:incoming>Flow_0zytled</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_00zz19x" sourceRef="Activity_0m8ezmd" targetRef="Event_03opuns" />
-    <bpmn:userTask id="Activity_1f6989u" name="Check  Criteria" camunda:assignee="admin">
+    <bpmn:sequenceFlow id="Flow_00zz19x" sourceRef="issue_loan_system" targetRef="Timer_1" />
+    <bpmn:userTask id="user_check_criteria" name="user_check_criteria" camunda:assignee="admin">
       <bpmn:incoming>Flow_0rcstdf</bpmn:incoming>
       <bpmn:outgoing>Flow_06p8ilf</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_13hkywj" name="Final Approval" camunda:assignee="admin">
+    <bpmn:userTask id="user_final_approval" name="user_final_approval" camunda:assignee="admin">
       <bpmn:incoming>Flow_001v9c8</bpmn:incoming>
       <bpmn:outgoing>Flow_0zytled</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:intermediateCatchEvent id="Event_03opuns">
+    <bpmn:intermediateCatchEvent id="Timer_1" name="Timer_1">
       <bpmn:incoming>Flow_00zz19x</bpmn:incoming>
       <bpmn:outgoing>Flow_13v2nak</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0hp37xt">
-        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${TimerTaskBefore.duration(true)}</bpmn:timeDate>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT01S</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
-    <bpmn:sequenceFlow id="Flow_044khk2" sourceRef="Activity_0a5aadz" targetRef="Event_126bpc8" />
-    <bpmn:sequenceFlow id="Flow_13v2nak" sourceRef="Event_03opuns" targetRef="Activity_0a5aadz" />
-    <bpmn:sequenceFlow id="Flow_001v9c8" sourceRef="Event_126bpc8" targetRef="Activity_13hkywj" />
-    <bpmn:sequenceFlow id="Flow_0zytled" sourceRef="Activity_13hkywj" targetRef="Event_1t53odq" />
-    <bpmn:intermediateCatchEvent id="Event_126bpc8">
+    <bpmn:sequenceFlow id="Flow_044khk2" sourceRef="Check_Further_system" targetRef="Timer_2" />
+    <bpmn:sequenceFlow id="Flow_13v2nak" sourceRef="Timer_1" targetRef="Check_Further_system" />
+    <bpmn:sequenceFlow id="Flow_001v9c8" sourceRef="Timer_2" targetRef="user_final_approval" />
+    <bpmn:sequenceFlow id="Flow_0zytled" sourceRef="user_final_approval" targetRef="Event_1t53odq" />
+    <bpmn:intermediateCatchEvent id="Timer_2" name="Timer_2">
       <bpmn:incoming>Flow_044khk2</bpmn:incoming>
       <bpmn:outgoing>Flow_001v9c8</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_1lxk87q">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">${TimerTaskAfter.duration(false)}</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT01S</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="my-camunda-workflow-timer-expression">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="my-camunda-workflow-timer-expression-junit">
       <bpmndi:BPMNEdge id="Flow_0zytled_di" bpmnElement="Flow_0zytled">
         <di:waypoint x="950" y="117" />
         <di:waypoint x="1002" y="117" />
@@ -81,26 +81,32 @@
           <dc:Bounds x="162" y="142" width="70" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0q4dsgy_di" bpmnElement="Activity_0a5aadz">
+      <bpmndi:BPMNShape id="Activity_0q4dsgy_di" bpmnElement="Check_Further_system">
         <dc:Bounds x="630" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1x7iblj_di" bpmnElement="Activity_0m8ezmd">
+      <bpmndi:BPMNShape id="Activity_1x7iblj_di" bpmnElement="issue_loan_system">
         <dc:Bounds x="400" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1t53odq_di" bpmnElement="Event_1t53odq">
         <dc:Bounds x="1002" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_19d0qhf_di" bpmnElement="Activity_1f6989u">
+      <bpmndi:BPMNShape id="Activity_19d0qhf_di" bpmnElement="user_check_criteria">
         <dc:Bounds x="250" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0nb5waf_di" bpmnElement="Activity_13hkywj">
+      <bpmndi:BPMNShape id="Activity_0nb5waf_di" bpmnElement="user_final_approval">
         <dc:Bounds x="850" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0sd1v8r_di" bpmnElement="Event_03opuns">
+      <bpmndi:BPMNShape id="Event_0sd1v8r_di" bpmnElement="Timer_1">
         <dc:Bounds x="542" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="541" y="142" width="39" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0fv788r_di" bpmnElement="Event_126bpc8">
+      <bpmndi:BPMNShape id="Event_0fv788r_di" bpmnElement="Timer_2">
         <dc:Bounds x="772" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="771" y="142" width="39" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
